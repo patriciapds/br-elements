@@ -2,6 +2,8 @@
 
 Input elements with mask and validation for common brazilian fields such as CPF, CNPJ, CEP, Telephone and Celphone
 
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/patriciapds/br-elements)
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
