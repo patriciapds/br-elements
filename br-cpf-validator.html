@@ -1,0 +1,20 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html">
+
+<script>
+  Polymer({
+
+    is: 'br-cpf-validator',
+
+    behaviors: [
+      Polymer.IronValidatorBehavior
+    ],
+
+    validate: function(value) {
+      var re = /^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$/;
+
+      return re.test(value);
+    }
+
+  });
+</script>
