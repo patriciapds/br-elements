@@ -1,6 +1,6 @@
 # \<br-elements\>
 
-Input elements with mask and validation for common brazilian fields such as CPF, CNPJ, CEP, Telephone and Celphone
+Input elements with mask and validation for common brazilian fields such as CPF, CNPJ and CEP.
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/patriciapds/br-elements)
 

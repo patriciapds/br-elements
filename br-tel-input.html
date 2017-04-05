@@ -4,15 +4,15 @@
 <link rel="import" href="../paper-input/paper-input-error.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
-<link rel="import" href="br-cpf-validator.html">
+<link rel="import" href="br-tel-validator.html">
 
 <!--
-`br-cpf-input`
+`br-tel-input`
 
 @demo demo/index.html 
 -->
 
-<dom-module id="br-cpf-input">
+<dom-module id="br-tel-input">
   <template>
     <style>
       :host {
@@ -30,17 +30,17 @@
 
       <label hidden$="[[!label]]">[[label]]</label>
 
-      <br-cpf-validator></br-cpf-validator>
+      <br-tel-validator></br-tel-validator>
 
       <input is="iron-input" id="input"
           aria-labelledby$="[[_ariaLabelledBy]]"
           aria-describedby$="[[_ariaDescribedBy]]"
           required$="[[required]]"
-          validator="br-cpf-validator"
+          validator="br-tel-validator"
           type="text"
-          allowed-pattern="[0-9\-\.]"
+          allowed-pattern="[0-9\-]"
           prevent-invalid-input
-          maxlength="14"
+          maxlength="9"
           bind-value="{{value}}"
           name$="[[name]]"
           disabled$="[[disabled]]"
@@ -61,7 +61,7 @@
   <script>
     Polymer({
 
-      is: 'br-cpf-input',
+      is: 'br-tel-input',
 
       behaviors: [
         Polymer.PaperInputBehavior,
@@ -71,7 +71,7 @@
       properties: {
         label: {
           type: String,
-          value: "CPF"
+          value: "Telefone"
         }
       },
 
@@ -83,36 +83,26 @@
         value = String(value);
 
         var start = this.$.input.selectionStart;
-        var previousCharADotOrDash = value.charAt(start - 1) === '.' || value.charAt(start - 1) === '-';
+        var previousCharADash = value.charAt(start - 1) === '-';
 
         // Remove any already-applied formatting.
-        value = value.replace(/[-.]/g, '');
+        value = value.replace(/-/g, '');
 
-        // Add a dot after the 3rd character
-        if (value.length > 3) {
-          value = value.substr(0,3) + '.' + value.substr(3)
-        }
-
-        // Add a dot after the 7th character
-        if (value.length > 7) {
-          value = value.substr(0,7) + '.' + value.substr(7)
-        }
-
-        // Add a dash after the 11th character
-        if (value.length > 11) {
-          value = value.substr(0,11) + '-' + value.substr(11)
+          // Add a dash after the 5th character
+        if (value.length > 4) {
+          value = value.substr(0,4) + '-' + value.substr(4)
         }
 
         // Remove trailing numbers
-        if (value.length > 14) {
-          value = value.substr(0,14);
+        if (value.length > 9) {
+          value = value.substr(0,9);
         }
-
+        
         this.updateValueAndPreserveCaret(value.trim());
 
         // If the character right before the selection is a newly inserted
         // dot or dash, we need to advance the selection to maintain the caret position.
-        if (!previousCharADotOrDash && (value.charAt(start - 1) === '-' || value.charAt(start - 1) === '.')) {
+        if (!previousCharADash && value.charAt(start - 1) === '-') {
           this.$.input.selectionStart = start + 1;
           this.$.input.selectionEnd = start + 1;
         }
