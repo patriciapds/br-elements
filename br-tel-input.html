@@ -4,15 +4,15 @@
 <link rel="import" href="../paper-input/paper-input-error.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
-<link rel="import" href="br-cep-validator.html">
+<link rel="import" href="br-tel-validator.html">
 
 <!--
-`br-cep-input`
+`br-tel-input`
 
 @demo demo/index.html 
 -->
 
-<dom-module id="br-cep-input">
+<dom-module id="br-tel-input">
   <template>
     <style>
       :host {
@@ -30,17 +30,17 @@
 
       <label hidden$="[[!label]]">[[label]]</label>
 
-      <br-cep-validator></br-cep-validator>
+      <br-tel-validator></br-tel-validator>
 
       <input is="iron-input" id="input"
           aria-labelledby$="[[_ariaLabelledBy]]"
           aria-describedby$="[[_ariaDescribedBy]]"
           required$="[[required]]"
-          validator="br-cep-validator"
+          validator="br-tel-validator"
           type="text"
-          allowed-pattern="[0-9\-]"
+          allowed-pattern="[0-9\(\)-]"
           prevent-invalid-input
-          maxlength="14"
+          maxlength="13"
           bind-value="{{value}}"
           name$="[[name]]"
           disabled$="[[disabled]]"
@@ -54,14 +54,13 @@
       <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error id="error">[[errorMessage]]</paper-input-error>
       </template>
-
     </paper-input-container>
   </template>
 
   <script>
     Polymer({
 
-      is: 'br-cep-input',
+      is: 'br-tel-input',
 
       behaviors: [
         Polymer.PaperInputBehavior,
@@ -71,7 +70,7 @@
       properties: {
         label: {
           type: String,
-          value: "CEP"
+          value: "Telefone"
         }
       },
 
@@ -83,26 +82,41 @@
         value = String(value);
 
         var start = this.$.input.selectionStart;
-        var previousCharADash = value.charAt(start - 1) === '-';
-
+        var previousCharASpaceOrDashOrParentheses = value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')';
+        
         // Remove any already-applied formatting.
-        value = value.replace(/-/g, '');
+        value = value.replace(/[-()/]/g, '');
+        
+        // Add a parentheses after the 0th character
+        if (value.length > 0) {
+          value = value.substr(0,0) + '(' + value.substr(0)
+        }
 
-          // Add a dash after the 5th character
-        if (value.length > 5) {
-          value = value.substr(0,5) + '-' + value.substr(5)
+        // Add a parentheses after the 3th character
+        if (value.length > 3) {
+          value = value.substr(0,3) + ')' + value.substr(3)
+        }
+
+        // // Add a space after the 4th character
+        // if (value.length > 4) {
+        //   value = value.substr(0,4) + ' ' + value.substr(4)
+        // }
+
+        // Add a dash after the 9th character
+        if (value.length > 8) {
+          value = value.substr(0,8) + '-' + value.substr(8)
         }
 
         // Remove trailing numbers
-        if (value.length > 9) {
-          value = value.substr(0,9);
+        if (value.length > 14) {
+          value = value.substr(0,14);
         }
         
         this.updateValueAndPreserveCaret(value.trim());
 
         // If the character right before the selection is a newly inserted
         // dot or dash, we need to advance the selection to maintain the caret position.
-        if (!previousCharADash && value.charAt(start - 1) === '-') {
+        if (!previousCharASpaceOrDashOrParentheses && (value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')')) {
           this.$.input.selectionStart = start + 1;
           this.$.input.selectionEnd = start + 1;
         }
