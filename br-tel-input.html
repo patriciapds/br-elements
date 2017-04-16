@@ -38,9 +38,9 @@
           required$="[[required]]"
           validator="br-tel-validator"
           type="text"
-          allowed-pattern="[0-9\(\)-]"
+          allowed-pattern="[0-9\(\)\s-]"
           prevent-invalid-input
-          maxlength="13"
+          maxlength="14"
           bind-value="{{value}}"
           name$="[[name]]"
           disabled$="[[disabled]]"
@@ -82,10 +82,10 @@
         value = String(value);
 
         var start = this.$.input.selectionStart;
-        var previousCharASpaceOrDashOrParentheses = value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')';
+        var previousCharASpaceOrDashOrParentheses = value.charAt(start - 1) === ' ' || value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')';
         
         // Remove any already-applied formatting.
-        value = value.replace(/[-()/]/g, '');
+        value = value.replace(/[-()\s/]/g, '');
         
         // Add a parentheses after the 0th character
         if (value.length > 0) {
@@ -97,14 +97,14 @@
           value = value.substr(0,3) + ')' + value.substr(3)
         }
 
-        // // Add a space after the 4th character
-        // if (value.length > 4) {
-        //   value = value.substr(0,4) + ' ' + value.substr(4)
-        // }
+        // Add a space after the 4th character
+        if (value.length > 4) {
+          value = value.substr(0,4) + ' ' + value.substr(4)
+        }
 
         // Add a dash after the 9th character
-        if (value.length > 8) {
-          value = value.substr(0,8) + '-' + value.substr(8)
+        if (value.length > 9) {
+          value = value.substr(0,9) + '-' + value.substr(9)
         }
 
         // Remove trailing numbers
@@ -115,10 +115,10 @@
         this.updateValueAndPreserveCaret(value.trim());
 
         // If the character right before the selection is a newly inserted
-        // dot or dash, we need to advance the selection to maintain the caret position.
-        if (!previousCharASpaceOrDashOrParentheses && (value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')')) {
-          this.$.input.selectionStart = start + 1;
-          this.$.input.selectionEnd = start + 1;
+        // parenthesis, space or dash, we need to advance the selection to maintain the caret position.
+        if (!previousCharASpaceOrDashOrParentheses && (value.charAt(start - 1) === ' ' || value.charAt(start - 1) === '-' || value.charAt(start - 1) === '(' || value.charAt(start - 1) === ')')) {
+          this.$.input.selectionStart = value.length;
+          this.$.input.selectionEnd = value.length;
         }
       }
     });
