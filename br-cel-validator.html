@@ -4,14 +4,14 @@
 <script>
   Polymer({
 
-    is: 'br-tel-validator',
+    is: 'br-cel-validator',
 
     behaviors: [
       Polymer.IronValidatorBehavior
     ],
 
     validate: function(value) {
-      var re = /^\([1-9]{2}\) [0-9]{4}\-[0-9]{4}$/;
+      var re = /^\([1-9]{2}\) [0-9]{5}\-[0-9]{4}$/;
 
       return re.test(value);
     }

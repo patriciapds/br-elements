@@ -13,41 +13,39 @@
     <link rel="import" href="../br-elements.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      demo-snippet.horizontal {
+        --demo-snippet-demo: {
+          @apply(--layout-horizontal);
+          @apply(--layout-justified);
+          @apply(--layout-wrap);
+        }
+      }
+      demo-snippet.horizontal paper-input {
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
     <div class="vertical-section-container centered">
-      <h3>CPF</h3>
-      <demo-snippet>
-        <template>
-          <br-cpf-input></br-cpf-input>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
-      <h3>CNPJ</h3>
-      <demo-snippet>
-        <template>
-          <br-cnpj-input></br-cnpj-input>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
-      <h3>CEP</h3>
-      <demo-snippet>
-        <template>
-          <br-cep-input></br-cep-input>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
-      <h3>Telefone</h3>
+    <h3>Inputs</h3>
       <demo-snippet>
         <template>
           <br-tel-input></br-tel-input>
+          <br-cel-input></br-cel-input>
+          <br-cpf-input></br-cpf-input>
+          <br-cnpj-input></br-cnpj-input>
+          <br-cep-input></br-cep-input>
+        </template>
+      </demo-snippet>
+
+    <h3>Auto-validate</h3>
+      <demo-snippet>
+        <template>
+          <br-tel-input auto-validate></br-tel-input>
+          <br-cel-input auto-validate></br-cel-input>
+          <br-cpf-input auto-validate></br-cpf-input>
+          <br-cnpj-input auto-validate></br-cnpj-input>
+          <br-cep-input auto-validate></br-cep-input>
         </template>
       </demo-snippet>
     </div>
