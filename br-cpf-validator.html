@@ -2,19 +2,31 @@
 <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html">
 
 <script>
-  Polymer({
+    Polymer({
 
-    is: 'br-cpf-validator',
+        is: 'br-cpf-validator',
 
-    behaviors: [
-      Polymer.IronValidatorBehavior
-    ],
+        behaviors: [
+            Polymer.IronValidatorBehavior
+        ],
 
-    validate: function(value) {
-      var re = /^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$/;
+        reduceSum: function (previousValue, currentValue) {
+            return previousValue + currentValue;
+        },
 
-      return re.test(value);
-    }
+        validate: function (cpf) {
+            cpf = cpf.toString().replace(/[^0-9]+/g, '');
+            var soma = [];
+            var soma2 = [];
 
-  });
+            for (var i = 0; i < 10; i++) {
+                if (cpf == i.toString().repeat(11) || cpf == '12345678909') return false;
+                if (i < 9) soma.push(parseInt(cpf[i]) * (10 - i));
+                soma2.push(parseInt(cpf[i]) * (11 - i));
+            }
+            if (((soma.reduce(this.reduceSum) % 11) < 2 ? 0 : 11 - (soma.reduce(this.reduceSum) % 11)) != cpf[9]) return false;
+            return (((soma2.reduce(this.reduceSum) % 11) < 2 ? 0 : 11 - (soma2.reduce(this.reduceSum) % 11)) != cpf[10]) ? false : true;
+        }
+
+    });
 </script>
